@@ -2,7 +2,7 @@
   "name": "mern-real-state",
   "version": "1.0.0",
   "main": "server.js",
-  "type":"module",
+  "type": "module",
   "scripts": {
     "test": "node server.js",
     "start": "nodemon server.js",
@@ -13,6 +13,9 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "express": "^4.21.2"
+    "bcrypt": "^5.1.1",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "mongoose": "^8.10.1"
   }
 }
