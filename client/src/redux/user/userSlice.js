@@ -21,11 +21,16 @@ const userSlice = createSlice({
         signInFailure: (state, action) => {
         state.loading = false
         state.error = action.payload
+        },
+        updateProfile: (state, action) => {
+        if (state.currentUser) {
+            state.currentUser.avatar = action.payload.avatar
         }
+        },
 
-    }
+    },
 })
 
-export const {signInStart, signInSuccess, signInFailure} = userSlice.actions
+export const {signInStart, signInSuccess, signInFailure, updateProfile} = userSlice.actions
 
 export default userSlice.reducer

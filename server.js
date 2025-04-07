@@ -3,6 +3,7 @@ import 'dotenv/config'
 import connectDB from './Server/config/mongodb.js'
 import userRouter from './Server/config/routes/userRouter.js'
 import authRouter from './Server/config/routes/authRouter.js'
+import cookieParser from 'cookie-parser'
 
 //App Config
 const app = express()
@@ -10,7 +11,8 @@ const port = process.env.PORT || 5000
 connectDB()
 
 // Middlewares
-app.use(express.json())
+app.use(express.json())   // To parse JSON bodies
+app.use(cookieParser())   // To parse cookies (for JWT tokens)
 
 app.use('/api/user', userRouter)
 app.use('/api/auth', authRouter)
