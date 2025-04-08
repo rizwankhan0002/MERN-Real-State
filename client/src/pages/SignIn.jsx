@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { signInStart, signInSuccess, signInFailure } from '../redux/user/userSlice'
@@ -9,6 +9,11 @@ const SignIn = () => {
   const {loading, error} = useSelector((state) => state.user)
   const navigate = useNavigate()
   const dispatch = useDispatch()
+
+  // Reset error when the component is mounted or when the form is changed
+  useEffect(() => {
+    dispatch(signInFailure(null))
+  }, [dispatch])
 
   const handleChange = (e) => {
    setFormData({
