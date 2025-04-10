@@ -8,7 +8,7 @@ import { toast } from 'react-toastify'
 const Profile = () => {
   const fileRef = useRef(null)
   const dispatch = useDispatch()
-  const { currentUser } = useSelector((state) => state.user)
+  const { currentUser, error } = useSelector((state) => state.user)
   const [loading, setLoading] = useState(true)
   const [imageUrl, setImageUrl] = useState(currentUser?.avatar || '')
   const [username, setUsername] = useState(currentUser?.username || '')
@@ -17,6 +17,7 @@ const Profile = () => {
   const [imageUploaded, setImageUploaded] = useState(false)
   const [uploadProgress, setUploadProgress] = useState(0)
   const [uploadSuccessMessage, setUploadSuccessMessage] = useState('')
+  const [updateSuccess, setUpdateSuccess] = useState(false)
 
   // Fetch the user's profile when the component mounts
   useEffect(() => {
@@ -141,6 +142,7 @@ const Profile = () => {
       setUsername(currentUser.username)
       setEmail(currentUser.email)
       setImageUrl(currentUser.avatar || '/default-avatar.png')
+      setUpdateSuccess(true)
     }
   }, [currentUser])
 
@@ -213,6 +215,8 @@ const Profile = () => {
         <span className='text-red-700 cursor-pointer'>Delete account</span>
         <span className='text-red-700 cursor-pointer'>Sign out</span>
       </div>
+      <p className='text-red-700 mt-5'>{error ? error : ''}</p>
+      <p className='text-green-700 mt-5'>{updateSuccess ? 'User is updated Successfully' : ''}</p>
     </div>
   )
 }
