@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useRef } from 'react'
 import axios from 'axios'
-import { deleteUserFailure, deleteUserStart, deleteUserSuccess, updateProfile } from '../redux/user/userSlice'
+import { deleteUserFailure, deleteUserStart, deleteUserSuccess, signOutUserFailure, signOutUserStart, signOutUserSuccess, updateProfile } from '../redux/user/userSlice'
 import { toast } from 'react-toastify'
 
 const Profile = () => {
@@ -167,6 +167,21 @@ const Profile = () => {
       dispatch(deleteUserFailure(error.message))
     }
   }
+  
+  const handleSignOut = async () => {
+    try {
+      dispatch(signOutUserStart())
+      const res = await fetch('/api/auth/signout')
+      const data = await res.json()
+      if (data.success === false) {
+        dispatch(signOutUserFailure(data.message))
+        return
+      }
+      dispatch(signOutUserSuccess(data))
+    } catch (error) {
+      dispatch(signOutUserFailure(data.message))
+    }
+  }
 
   return (
     <div className='p-3 max-w-lg mx-auto'>
@@ -231,8 +246,9 @@ const Profile = () => {
       </form>
       <div className='flex justify-between mt-5'>
         <span onClick={handleDeleteUser} className='text-red-700 cursor-pointer'>Delete account</span>
-        <span className='text-red-700 cursor-pointer'>Sign out</span>
+        <span onClick={handleSignOut} className='text-red-700 cursor-pointer'>Sign out</span>
       </div>
+      <p className='text-red-700 mt-5'>{error ? error : ''}</p>
       <p className='text-green-700 mt-5'>{updateSuccess ? 'User is updated Successfully' : ''}</p>
     </div>
   )
