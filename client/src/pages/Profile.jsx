@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useRef } from 'react'
 import axios from 'axios'
-import { updateProfile } from '../redux/user/userSlice'
+import { deleteUserFailure, deleteUserStart, deleteUserSuccess, updateProfile } from '../redux/user/userSlice'
 import { toast } from 'react-toastify'
 
 const Profile = () => {
@@ -102,6 +102,7 @@ const Profile = () => {
         // Optionally, dispatch Redux action to update user data in the store
         dispatch(updateProfile({ username, email, avatar: imageUrl }))
         toast.success('Profile updated successfully')
+        setUpdateSuccess(true)
 
         // Clear input fields after successful update
         setUsername('')
@@ -118,6 +119,7 @@ const Profile = () => {
     } catch (error) {
       console.log('Error updating profile:', error)
       toast.error('Failed to update profile')
+      setUpdateSuccess(false)
     }
   
   
@@ -142,12 +144,28 @@ const Profile = () => {
       setUsername(currentUser.username)
       setEmail(currentUser.email)
       setImageUrl(currentUser.avatar || '/default-avatar.png')
-      setUpdateSuccess(true)
     }
   }, [currentUser])
 
   if (loading) {
     return <div>Loading...</div>
+  }
+
+  const handleDeleteUser = async () => {
+    try {
+      dispatch(deleteUserStart())
+      const res = await fetch(`/api/user/delete/${currentUser._id}`, {
+        method: 'DELETE',
+      })
+      const data = await res.json()
+      if (data.success === false) {
+        dispatch(deleteUserFailure(data.message))
+        return
+      }
+      dispatch(deleteUserSuccess(data))
+    } catch (error) {
+      dispatch(deleteUserFailure(error.message))
+    }
   }
 
   return (
@@ -212,10 +230,9 @@ const Profile = () => {
         </button>
       </form>
       <div className='flex justify-between mt-5'>
-        <span className='text-red-700 cursor-pointer'>Delete account</span>
+        <span onClick={handleDeleteUser} className='text-red-700 cursor-pointer'>Delete account</span>
         <span className='text-red-700 cursor-pointer'>Sign out</span>
       </div>
-      <p className='text-red-700 mt-5'>{error ? error : ''}</p>
       <p className='text-green-700 mt-5'>{updateSuccess ? 'User is updated Successfully' : ''}</p>
     </div>
   )

@@ -1,5 +1,5 @@
 import express from 'express'
-import { getProfile, test, updateProfile } from '../controllers/userController.js'
+import { deleteUser, getProfile, test, updateProfile } from '../controllers/userController.js'
 import authMiddleware from '../../middleware/authmiddlerware.js'
 
 const userRouter = express.Router()
@@ -7,5 +7,6 @@ const userRouter = express.Router()
 userRouter.get('/test', test )
 userRouter.put('/update-profile',authMiddleware,updateProfile)
 userRouter.get('/profile', authMiddleware, getProfile)
+userRouter.delete('/delete/:id',authMiddleware, deleteUser)
 
 export default userRouter
