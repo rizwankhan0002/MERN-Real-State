@@ -4,6 +4,7 @@ import { useRef } from 'react'
 import axios from 'axios'
 import { deleteUserFailure, deleteUserStart, deleteUserSuccess, signOutUserFailure, signOutUserStart, signOutUserSuccess, updateProfile } from '../redux/user/userSlice'
 import { toast } from 'react-toastify'
+import { Link } from 'react-router-dom'
 
 const Profile = () => {
   const fileRef = useRef(null)
@@ -243,6 +244,9 @@ const Profile = () => {
         >
           update
         </button>
+        <Link to={'/create-listing'} className='bg-green-700 text-white p-3 rounded-lg uppercase text-center hover:opacity-95'>
+        Create Listing
+        </Link>
       </form>
       <div className='flex justify-between mt-5'>
         <span onClick={handleDeleteUser} className='text-red-700 cursor-pointer'>Delete account</span>
