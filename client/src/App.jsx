@@ -11,6 +11,7 @@ import CreateListing from './pages/CreateListing'
 import { ToastContainer } from 'react-toastify'
 import UpdateListing from './pages/UpdateListing'
 import Listing from './pages/Listing'
+import Search from './pages/Search'
 
 const App = () => {
   return (
@@ -21,6 +22,7 @@ const App = () => {
       <Route path='/sign-in' element={<SignIn />} />
       <Route path='/sign-up' element={<SignUp />} />
       <Route path='/about' element={<About />} />
+      <Route path='/search' element={<Search />}></Route>
       <Route path='/listing/:listingId' element={<Listing />}></Route>
 
       <Route element={<PrivateRoute />} >
