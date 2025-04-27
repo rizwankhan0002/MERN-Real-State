@@ -5,6 +5,9 @@ import userRouter from './Server/config/routes/userRouter.js'
 import authRouter from './Server/config/routes/authRouter.js'
 import cookieParser from 'cookie-parser'
 import listRouter from './Server/config/routes/listingRouter.js'
+import path from 'path'
+
+const __dirname = path.resolve()
 
 //App Config
 const app = express()
@@ -18,6 +21,13 @@ app.use(cookieParser())   // To parse cookies (for JWT tokens)
 app.use('/api/user', userRouter)
 app.use('/api/auth', authRouter)
 app.use('/api/listing', listRouter)
+
+
+app.use(express.static(path.join(__dirname, '/client/dist')))
+
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'client', 'dist', 'index.html'))
+})
 
 app.use((err, req, res, next) => {
     const statusCode = err.statusCode || 500
